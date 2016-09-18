@@ -1,18 +1,16 @@
 package com.headerphile.olevegard.legopartdb;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import Database.LegoPart;
 import Database.MyDBHandler;
@@ -26,21 +24,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RelativeLayout main = (RelativeLayout) findViewById(R.id.main_layout);
-
         final EditText enterId = (EditText) findViewById(R.id.enter_id_edit);
         Button goButton = (Button) findViewById(R.id.enter_id_edit_go);
+
+        Button listAllButton = (Button) findViewById(R.id.list_all);
 
         mdbh = new MyDBHandler(this, null, null, 1);
         mdbh.buildDb();
 
-        addTableRow("Part Id", "Description", "Width", "Length", "Height");
+        addTableRow("Id", "Description", "W", "L", "H");
 
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LegoPart part = mdbh.getPart(enterId.getText().toString());
                 if (part != null){
+                    addTableRow(part);
+                }
+            }
+        });
+
+        listAllButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<LegoPart> parts =  mdbh.getAllParts();
+                for (LegoPart part : parts){
                     addTableRow(part);
                 }
             }

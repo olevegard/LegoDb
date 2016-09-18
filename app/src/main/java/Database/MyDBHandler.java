@@ -1,25 +1,15 @@
 package Database;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import com.headerphile.olevegard.legopartdb.R;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
@@ -42,16 +32,14 @@ public class MyDBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String tableQuery = "CREATE TABLE " + TABLE_PART  + " ( " +
-                    COLUMN_PART_ID + " varchar(10) NOT NULL," +
-                    COLUMN_DESCRITION + " varchar(200)," +
-                    COLUMN_WIDTH + " float NOT NULL," +
-                    COLUMN_LENGTH + " float NOT NULL," +
-                    COLUMN_HEIGHT + " float DEFAULT 1 NOT NULL," +
-                    "PRIMARY KEY (" + COLUMN_PART_ID + ")," +
-                    "CONSTRAINT ID UNIQUE (" + COLUMN_PART_ID + ")" +
-                ")";
-        //"ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-
+            COLUMN_PART_ID + " varchar(10) NOT NULL," +
+            COLUMN_DESCRITION + " varchar(200)," +
+            COLUMN_WIDTH + " float NOT NULL," +
+            COLUMN_LENGTH + " float NOT NULL," +
+            COLUMN_HEIGHT + " float DEFAULT 1 NOT NULL," +
+            "PRIMARY KEY (" + COLUMN_PART_ID + ")," +
+            "CONSTRAINT ID UNIQUE (" + COLUMN_PART_ID + ")" +
+        ")";
 
         try{
             db.execSQL(tableQuery);
@@ -59,13 +47,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
             Log.d("DEBUG", "Something bad happened " + e.getMessage());
 
         }
-        /*
-        String CREATE_PRODUCTS_TABLE = "CREATE TABLE " +
-                TABLE_PRODUCTS + "("
-                + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_PRODUCTNAME
-                + " TEXT," + COLUMN_QUANTITY + " INTEGER" + ")";
-        db.execSQL(CREATE_PRODUCTS_TABLE);
-        */
     }
 
     public void buildDb(){
@@ -250,31 +231,22 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     private static LegoPart createLegoPartFromCursor(Cursor cursor ){
-        if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
-            LegoPart legoPart = new LegoPart(
-                    cursor.getString(0),
-                    cursor.getString(1),
-                    cursor.getInt(2),
-                    cursor.getInt(3),
-                    cursor.getInt(4));
-            cursor.close();
-
-            return legoPart;
-        }
-
-        return null;
+        return new LegoPart(
+            cursor.getString(0),
+            cursor.getString(1),
+            cursor.getInt(2),
+            cursor.getInt(3),
+            cursor.getInt(4));
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion,
-                          int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PART );
         onCreate(db);
 
     }
-    public void addPart(String id) {
 
+    public void addPart(String id) {
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_PART_ID, id);
@@ -287,28 +259,25 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         db.insert(TABLE_PART, null, values);
         db.close();
-
-        Log.d("DEBUG", "Inserted");
     }
 
-    public ArrayList<String> getAllParts(){
+    public ArrayList<LegoPart> getAllParts(){
         String query = "Select * FROM " + TABLE_PART;
 
-        ArrayList<String> allDescriptions = new ArrayList<>();
+        ArrayList<LegoPart> allParts = new ArrayList<>();
 
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor = db.rawQuery(query, null);
 
             while (cursor.moveToNext()) {
-                String desc = cursor.getString(0);
-                allDescriptions.add(desc);
+                allParts.add(createLegoPartFromCursor(cursor));
             }
         } catch (Exception e){
             Log.d("DEBUG", e.getMessage());
         }
 
-        return allDescriptions;
+        return allParts;
     }
     public LegoPart getPart(String id) {
 
@@ -317,17 +286,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        String description = "[PART NOT FOUND]";
+        boolean found = cursor.moveToNext();
+        if (!found){
+            Log.d("DEBUG", "No part found for : " + id);
+            return null;
+        }
 
         LegoPart legoPart = createLegoPartFromCursor(cursor);
-        /*
-        if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
-            description = cursor.getString(1);
-            cursor.close();
-        }
-        */
 
+        cursor.close();
         db.close();
 
         return legoPart;
