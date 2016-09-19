@@ -1,4 +1,4 @@
-package Database;
+package com.headerphile.olevegard.legopartdb.Database;
 
 import android.annotation.TargetApi;
 import android.database.sqlite.SQLiteDatabase;
