@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import com.headerphile.olevegard.legopartdb.Database.LegoPart;
 
-public class PartListAdapter extends RecyclerView.Adapter<PartListAdapter.ViewHolder>{
+public class LegoPartListAdapter extends RecyclerView.Adapter<LegoPartListAdapter.ViewHolder>{
 
     Context context;
     View view;
@@ -21,7 +21,7 @@ public class PartListAdapter extends RecyclerView.Adapter<PartListAdapter.ViewHo
     TextView textView;
     ArrayList<LegoPart> partList;
 
-    public PartListAdapter(Context context, ArrayList<LegoPart> partList){
+    public LegoPartListAdapter(Context context, ArrayList<LegoPart> partList){
         this.context = context;
         this.partList = partList;
     }
@@ -45,7 +45,7 @@ public class PartListAdapter extends RecyclerView.Adapter<PartListAdapter.ViewHo
     }
 
     @Override
-    public PartListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public LegoPartListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         view = LayoutInflater.from(context).inflate(R.layout.view_part_list_item,parent,false);
         viewHolder = new ViewHolder(view);
 
