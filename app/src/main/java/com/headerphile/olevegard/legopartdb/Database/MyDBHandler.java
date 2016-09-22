@@ -42,7 +42,38 @@ public class MyDBHandler extends SQLiteOpenHelper {
         ")";
 
         try{
+            db.execSQL("PRAGMA foreign_keys = ON;");
             db.execSQL(tableQuery);
+            db.execSQL("CREATE TABLE LegoSet (SetId int NOT NULL, SetName varchar(50), PRIMARY KEY (SetId))");
+
+            db.execSQL("CREATE TABLE LegoColor (" +
+                    "ColorId int AUTO_INCREMENT," +
+                    "ColorName varchar(40) NOT NULL," +
+                    "PRIMARY KEY (ColorId), CONSTRAINT Color UNIQUE (ColorName))");
+
+            db.execSQL(
+                "CREATE TABLE SetParts (" +
+                    "Id int AUTO_INCREMENT," +
+                    "PartId varchar(10) NOT NULL, " +
+                    "SetId int NOT NULL, " +
+                    "ColorId int NOT NULL, " +
+                    "PartCount int, " +
+                    "FoundCount int DEFAULT 0, " +
+                    "PRIMARY KEY (Id)," +
+                    "FOREIGN KEY (ColorId) REFERENCES LegoColor(ColorId)," +
+                    "FOREIGN KEY (PartId) REFERENCES Part(PartId)," +
+                    "FOREIGN KEY (SetId) REFERENCES LegoSet(SetId)" +
+                        ");");
+
+
+            /*
+                    "INDEX fk_PartId (PartId), " +
+                    "INDEX fk_SetId (SetId), " +
+                    "INDEX fk_ColorId (ColorId)" +
+                    "ALTER TABLE `SetParts` ADD CONSTRAINT fk_ColorId FOREIGN KEY (`ColorId`) REFERENCES `LegoColor` (`ColorId`) ;" +
+                    "ALTER TABLE `SetParts` ADD CONSTRAINT fk_PartId FOREIGN KEY (`PartId`) REFERENCES `Part` (`PartId`) ; " +
+                    "ALTER TABLE `SetParts` ADD CONSTRAINT fk_SetId FOREIGN KEY (`SetId`) REFERENCES `LegoSet` (`SetId`);");
+                    */
         } catch (Exception e){
             Log.d("DEBUG", "Something bad happened " + e.getMessage());
 
@@ -224,7 +255,76 @@ public class MyDBHandler extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO Part (PartId, Description, Width, Length, Height) VALUES ('x77', 'String, Cord, Undetermined', 1.0, 1.0, 1.0);");
             db.execSQL("INSERT INTO Part (PartId, Description, Width, Length, Height) VALUES ('x77a', 'String, Cord, Thin', 1.0, 1.0, 1.0);");
             db.execSQL("INSERT INTO Part (PartId, Description, Width, Length, Height) VALUES ('x77b', 'String, Cord, Thick', 1.0, 1.0, 1.0);");
-            db.execSQL("INSERT INTO Part (PartId, Description, Width, Length, Height) VALUES ('x88', 'Rubbar band, Small, Square cross sextion', 1.0, 1.0, 1.0);");
+            db.execSQL("INSERT INTO Part (PartId, Description, Width, Length, Height) VALUES ('x88', 'Rubber band, Small, Square cross sextion', 1.0, 1.0, 1.0);");
+
+            db.execSQL("Delete from LegoColor" );
+            db.execSQL("INSERT INTO LegoColor (ColorId, ColorName) VALUES (5, 'Black');");
+            db.execSQL("INSERT INTO LegoColor (ColorId, ColorName) VALUES (8, 'Light Transparent Blue');");
+            db.execSQL("INSERT INTO LegoColor (ColorId, ColorName) VALUES (7, 'Old Brown');");
+            db.execSQL("INSERT INTO LegoColor (ColorId, ColorName) VALUES (3, 'Old Gray');");
+            db.execSQL("INSERT INTO LegoColor (ColorId, ColorName) VALUES (4, 'Red');");
+            db.execSQL("INSERT INTO LegoColor (ColorId, ColorName) VALUES (9, 'Transparent Yellow');");
+            db.execSQL("INSERT INTO LegoColor (ColorId, ColorName) VALUES (1, 'White');");
+            db.execSQL("INSERT INTO LegoColor (ColorId, ColorName) VALUES (6, 'Yellow');");
+
+
+            db.execSQL("Delete from LegoSet" );
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (1477, 'Red Racer');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6057, 'Sea Serpent');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6145, 'Crystal Crawler');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6175, 'Crystal Explorer Sub');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6325, 'Package Pick-Up');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6342, 'Beach Resuce Chopper');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6370, 'Weekend Home');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6446, 'Crane Truck');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6458, 'Satelite With Astronaut');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6508, 'Wave Racer');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6550, 'Outback Racer');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6562, 'Gas Stop Shop');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6564, 'Recycle Truck');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6609, 'Race Car');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6639, 'Raven Racer');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6660, 'Hook And Haul Wrecker');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6661, 'TV Van');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6668, 'Recycle Truck');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6673, 'Solo Trainer');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6679, 'Dark Shark');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6810, 'Laser Ranger');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6814, 'Ice Tunnelator');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6909, 'Galaxy Tractor');");
+            db.execSQL("INSERT INTO LegoSet (SetId, SetName) VALUES (6938, 'Scorpion Detector');");
+
+
+            db.execSQL("Delete from SetParts" );
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3005', 1477, 4, 2)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('4595', 1477, 5, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('4276', 1477, 4, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('2452', 1477, 4, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('2446', 1477, 5, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('2447', 1477, 8, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3626ap01', 1477, 6, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('970c00', 1477, 1, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('973p14c01', 1477, 1, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('4865', 1477, 4, 2)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3023', 1477, 5, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3023', 1477, 1, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3623', 1477, 1, 2)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3022', 1477, 4, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3021', 1477, 4, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3020', 1477, 4, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3794', 1477, 1, 2)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3794', 1477, 4, 2)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3040', 1477, 1, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3070b', 1477, 5, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('2431', 1477, 5, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3829c01', 1477, 5, 5)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3641', 1477, 5, 5)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('4624', 1477, 5, 5)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('2412', 1477, 6, 2)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3829c01', 1477, 1, 1)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('3641', 1477, 5, 4)");
+            db.execSQL("insert into SetParts(PartId, SetId, ColorId, PartCount) Values('4624', 1477, 1, 4)");
+
         } catch (Exception e){
             Log.d("DEBUG", "Build query failed");
         }
@@ -238,6 +338,22 @@ public class MyDBHandler extends SQLiteOpenHelper {
             cursor.getInt(3),
             cursor.getInt(4));
     }
+    private static LegoSet createLegoSetFromCursor(Cursor cursor ){
+        return new LegoSet(
+            cursor.getInt(0),
+            cursor.getString(1));
+    }
+    private static LegoSetPart createLegoSetPartFromCursor(Cursor cursor ){
+        return new LegoSetPart(
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4),
+                cursor.getInt(5),
+                cursor.getInt(6));
+    }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -300,6 +416,65 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return legoPart;
     }
 
+    public LegoSet getLegoSetWithParts(int setId){
+
+        String query = "SELECT SetName FROM LegoSet WHERE SetId=" + setId;
+
+        String setName = "[NOT FOUND]";
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToNext())
+                setName = cursor.getString(0);
+
+        } catch (Exception e){
+            Log.d("DEBUG", e.getMessage());
+        }
+
+        return new LegoSet(setId, setName, getAllPartsForSet(setId));
+    }
+
+    // TODO: Function should return a single LegoSet complete with all PartIds, colors, counts, colors, etc...
+    public ArrayList<LegoSetPart> getAllPartsForSet(int setId) {
+        String query = "SELECT LegoSet.SetId, LegoSet.SetName, Part.PartId, Part.Description, ColorName, PartCount, FoundCount, Width, Length, Height " +
+        "from SetParts, LegoColor, Part, LegoSet " +
+        "where SetParts.ColorId = LegoColor.ColorId and SetParts.PartId = Part.PartId and SetParts.SetId = LegoSet.SetId " +
+        "order by Part.PartId";
+
+        ArrayList<LegoSetPart> legoSetParts = new ArrayList<>();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                legoSetParts.add(createLegoSetPartFromCursor(cursor));
+            }
+        } catch (Exception e){
+            Log.d("DEBUG", e.getMessage());
+        }
+
+        return legoSetParts;
+    }
+
+    public ArrayList<LegoSet> getAllSets(){
+        String query = "Select * FROM LegoSet";
+
+        ArrayList<LegoSet> allSets = new ArrayList<>();
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+
+            while (cursor.moveToNext()) {
+                allSets.add(createLegoSetFromCursor(cursor));
+            }
+        } catch (Exception e){
+            Log.d("DEBUG", e.getMessage());
+        }
+
+        return allSets;
+    }
 
 }
 

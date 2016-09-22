@@ -1,0 +1,69 @@
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lego_set_card_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardCornerRadius="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/set_part_set_name"
+            android:layout_width="60dp"
+            android:layout_height="18dp"
+            android:textSize="13sp"
+            android:text="Set Name"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/set_part_part_id"
+            android:layout_marginLeft="40dp"
+            android:layout_width="50dp"
+            android:layout_height="18dp"
+            android:textSize="13sp"
+            android:text="Id"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/set_part_part_desc"
+            android:layout_marginLeft="55dp"
+            android:layout_width="250dp"
+            android:layout_height="18dp"
+            android:textSize="13sp"
+            android:text="Description"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/set_part_part_color"
+            android:layout_marginLeft="55dp"
+            android:layout_width="100dp"
+            android:layout_height="18dp"
+            android:textSize="13sp"
+            android:text="Color"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/set_part_part_count"
+            android:layout_marginLeft="55dp"
+            android:layout_width="30dp"
+            android:layout_height="18dp"
+            android:textSize="13sp"
+            android:text="Count"
+            android:gravity="left"/>
+
+        <TextView
+            android:id="@+id/set_part_part_has_count"
+            android:layout_marginLeft="30dp"
+            android:layout_width="250dp"
+            android:layout_height="18dp"
+            android:textSize="13sp"
+            android:text="Has Count"
+            android:gravity="left"/>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
